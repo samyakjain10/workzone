@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>WorkZone</title>
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <link rel = "icon" type = "image/png" href = "{{ url_for('static', filename='Company_logo.png') }}">
+        <!-- For apple devices -->
+        <link rel = "apple-touch-icon" type = "image/png" href = "{{ url_for('static', filename='Company_logo.png') }}"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+        <script>
+        $(document).ready(function(){
+          $("#add").click(function(){
+            $("#add_toggle").toggle();
+          });
+        });
+        </script>
+        <script>
+        $(document).ready(function(){
+          $("#add").click(function(){
+            $("#add_icon").toggleClass("fa fa-chevron-down");
+            $("#add_icon").toggleClass("fa fa-chevron-up");
+          });
+        });
+        </script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">Scientificatt</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle fa-lg fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="/profile">Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <a class="nav-link my-2" href="/"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Projects</a>
+                <a class="nav-link my-2" href="/departments/"><div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>Departments</a>
+                {% if user.designation=='Founder' %}
+                <a class="nav-link my-2" href="/branches/"><div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>Branches</a>
+                {% endif %}
+                {% if user.designation=='Founder' %}
+                <a class="nav-link my-2" href="/employee/admin"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Employees</a>
+                {% endif %}
+                {% if user.designation=='Branch Head' %}
+                <a class="nav-link my-2" href="/employee/branch_head"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Employees</a>
+                {% endif %}
+                <a class="nav-link my-2" href="/register"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Register an employee</a>
+                <a class="nav-link my-2" href="/new"><div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>New registrations</a>
+                <a class="nav-link my-2" href="/add"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Create new project</a>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {{user.name}}
+        </div>
+    </nav>
+</div>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+        <h1 class="display-3 my-4">Departments</h1>
+        <hr class="my-4">
+        {% if user.designation=='Founder' %}
+        <div class="card">
+          <div id="add" class="card text-center">
+            <button type="button" class="btn btn-outline-dark">Add Department<i id="add_icon" class="fa fa-chevron-down float-right mt-1"></i></button>
+          </div>
+          <div id="add_toggle" style="display: none;" class="mt-2 px-3 py-3">
+            <form method="POST" action="/add_department">
+                <div class="form-group"><label class="mb-1" for="inputName">Department Name</label><input class="form-control py-4" id="inputName" name="name" type="text" placeholder="Enter department name" required></div>
+                <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><button class="btn btn-primary" type="submit"><i class="fa fa-plus mt-1"></i>  Add</button></div>
+            </form>
+        </div>
+        </div>
+        {% endif %}
+        <br>
+        <div class="card mb-4">
+             <div class="card-header"><i class="fas fa-table mr-1"></i>Departments</div>
+                 <div class="card-body">
+                     <div class="table-responsive">
+                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Department Name</th>
+                                    <th>Image</th>
+                                    <th>Upload New Image</th>
+                                    {% if user.designation=='Founder' %}
+                                    <th>Delete</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Department Name</th>
+                                    <th>Image</th>
+                                    <th>Upload New Image</th>
+                                    {% if user.designation=='Founder' %}
+                                    <th>Delete</th>
+                                    {% endif %}
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for department in departments %}
+                                <tr>
+                                    <td>{{department.name}}</td>
+                                    {% set fname = department.image %}
+                                    {% if fname != " " %}
+                                    <td><img src="{{ url_for('static', filename=fname) }}" width="100px" height="50px"></td>
+                                    {% endif %}
+                                    {% if fname == " " %}
+                                    <td>No image file uploaded</td>
+                                    {% endif %}
+                                    <td>
+                                        <form action="/uploader/{{department.sno}}" method="POST" enctype="multipart/form-data">
+                                            <input type="file" name="fileupload" accept="image/*">
+                                            <button type="submit" class="btn btn-outline-primary">Upload</button>
+                                        </form>
+                                    {% if user.designation=='Founder' %}
+                                    <td>
+                                        <a href="/delete_department/{{department.sno}}"><button type="button" class="btn btn-outline-danger">Delete</button></a>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    </body>
+</html>

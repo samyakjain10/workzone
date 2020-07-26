@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+                <a class="nav-link my-2" href="/"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Projects</a>
+                <a class="nav-link my-2" href="/departments/"><div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>Departments</a>
+                <a class="nav-link my-2 active" href="/employee/branch_head"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Employees</a>
+                <a class="nav-link my-2" href="/register"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Register an employee</a>
+                <a class="nav-link my-2" href="/new"><div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>New registrations</a>
+                <a class="nav-link my-2" href="/add"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Create new project</a>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {{user.name}}
+        </div>
+    </nav>
+</div>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+        <h1 class="display-3 my-4">Employees</h1>
+        <hr class="my-4">
+        
+        <div class="card mb-4">
+             <div class="card-header"><i class="fas fa-table mr-1"></i>Employees</div>
+                 <div class="card-body">
+                     <div class="table-responsive">
+                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>Branch</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>Branch</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for employee in employees %}
+                                <tr>
+                                    <td>{{employee.name}}</td>
+                                    <td>{{employee.email}}</td>
+                                    <td>{{employee.phone}}</td>
+                                    <td>{{employee.designation}}</td>
+                                    <td>{{employee.department}}</td>
+                                    <td>{{employee.branch}}</td>
+                                    <td>
+                                        <a href="/employee/branch_head/edit/{{employee.id}}"><button type="button" class="btn btn-outline-primary">Edit</button></a>
+                                    </td>
+                                    <td>
+                                        <a href="/employee/branch_head/delete/{{employee.id}}"><button type="button" class="btn btn-outline-danger">Delete</button></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

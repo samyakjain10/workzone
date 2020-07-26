@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+                <a class="nav-link my-2" href="/"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Projects</a>
+                <a class="nav-link my-2" href="/departments/"><div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>Departments</a>
+                <a class="nav-link my-2 active" href="/employee/branch_head"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Employees</a>
+                <a class="nav-link my-2" href="/register"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Register an employee</a>
+                <a class="nav-link my-2" href="/new"><div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>New registrations</a>
+                <a class="nav-link my-2" href="/add"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Create new project</a>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {{user.name}}
+        </div>
+    </nav>
+</div>
+<div id="layoutSidenav_content">
+<main>
+    <div class="container">
+        <h1 class="display-3 my-4">Edit Details</h1>
+        <hr class="my-4">
+        <!-- Name Email Phone password state department designation-->
+        <form action = "/employee/branch_head/edit/{{employee.id}}" method = "post" novalidate>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Name</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" value="{{employee.name}}" name="name">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Email address</label>
+            <input type="email" class="form-control" id="exampleFormControlInput1" value="{{employee.email}}" name="email">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Phone</label>
+            <input type="tel" class="form-control" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="{{employee.phone}}" name="phone" >
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Branch</label>
+            <div class="input-group">
+              <select class="custom-select" id="inputGroupSelect04" name="branch" readonly>
+                <option selected>{{employee.branch}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Department</label>
+            <div class="input-group">
+              <select class="custom-select" id="inputGroupSelect04" name="department">
+                <option selected>{{employee.department}}</option>
+                {% for o in total_departments %}
+                <option value="{{ o.name }}">{{ o.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Designation</label>
+            <div class="input-group">
+              <select class="custom-select" id="inputGroupSelect04" name="designation">
+                <option selected>{{employee.designation}}</option>
+                {% for o in total_designations %}
+                <option value="{{ o.designation }}">{{ o.designation }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>  
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">          Submit          </button>
+          </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+                <a class="nav-link my-2" href="/"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Projects</a>
+                {% if user.designation!='Employee' %}
+                <a class="nav-link my-2" href="/departments/"><div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>Departments</a>
+                {% if user.designation=='Founder' %}
+                <a class="nav-link my-2" href="/branches/"><div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>Branches</a>
+                {% endif %}
+                {% if user.designation=='Founder' %}
+                <a class="nav-link my-2" href="/employee/admin"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Employees</a>
+                {% endif %}
+                {% if user.designation=='Branch Head' %}
+                <a class="nav-link my-2" href="/employee/branch_head"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Employees</a>
+                {% endif %}
+                <a class="nav-link my-2" href="/register"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Register an employee</a>
+                <a class="nav-link my-2" href="/new"><div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>New registrations</a>
+                <a class="nav-link my-2" href="/add"><div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>Create new project</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {{user.name}}
+        </div>
+    </nav>
+</div>
+<div id="layoutSidenav_content">
+<main>
+    <div class="container-fluid">
+        <h1 class="display-3 my-4">{{user.name}}</h1>
+        <hr class="my-4">
+        <div class="row px-5 ">
+            <div class="card bg-dark text-white mb-3" style="width: 72rem;">
+              <div class="card-header"><h4>Email</h4></div>
+              <div class="card-body bg-light text-dark">
+                <p class="card-text">{{user.email}}</p>
+              </div>
+            </div>
+            <div class="card bg-dark text-white mb-3" style="width: 72rem;">
+              <div class="card-header"><h4>Phone No.</h4></div>
+              <div class="card-body bg-light text-dark">
+                <p class="card-text">{{user.phone}}</p>
+              </div>
+            </div>
+            <div class="card bg-dark text-white mb-3" style="width: 72rem;">
+              <div class="card-header"><h4>Branch</h4></div>
+              <div class="card-body bg-light text-dark">
+                <p class="card-text">{{user.branch}}</p>
+              </div>
+            </div>
+            <div class="card bg-dark text-white mb-3" style="width: 72rem;">
+              <div class="card-header"><h4>Department</h4></div>
+              <div class="card-body bg-light text-dark">
+                <p class="card-text">{{user.department}}</p>
+              </div>
+            </div>
+            <div class="card bg-dark text-white mb-3" style="width: 72rem;">
+              <div class="card-header"><h4>Position</h4></div>
+              <div class="card-body bg-light text-dark">
+                <p class="card-text">{{user.designation}}</p>
+              </div>
+            </div>
+        </div>
+{% endblock %}
